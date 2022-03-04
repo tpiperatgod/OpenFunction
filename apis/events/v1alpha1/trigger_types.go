@@ -34,6 +34,10 @@ type TriggerSpec struct {
 	Inputs map[string]*Input `json:"inputs"`
 	// Subscribers defines the subscribers associated with the Trigger
 	Subscribers []*Subscriber `json:"subscribers"`
+	// The logging verbose level of the trigger handler, e.g. "1", "2", "3".
+	// The level increases as the value increases, default is "1".
+	// +optional
+	LogVerboseLevel *string `json:"logVerboseLevel,omitempty"`
 }
 
 type Input struct {
