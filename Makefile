@@ -55,6 +55,7 @@ help: ## Display this help.
 
 ##@ Development
 
+# Before executing make manifests, you need to go to the `hack` directory and execute the `generate-cert.sh` script.
 manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefinition objects.
 	$(CONTROLLER_GEN) $(CRD_OPTIONS) rbac:roleName=manager-role webhook paths="./..." output:crd:artifacts:config=config/crd/bases
 	kubectl kustomize config/default | sed -e '/creationTimestamp: null/d' | sed -e 's/openfunction-system/openfunction/g' | sed -e 's/openfunction\:latest/openfunction\:$(VERSION)/g' | sed -e 's/app.kubernetes.io\/version\: latest/app.kubernetes.io\/version\: $(VERSION)/g' > config/bundle.yaml
