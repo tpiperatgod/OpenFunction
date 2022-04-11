@@ -115,12 +115,10 @@ jobs:
           helm repo add strimzi https://strimzi.io/charts/
           helm install kafka-operator -n default strimzi/strimzi-kafka-operator
           kubectl apply -f config/samples/function-kafka-quick.yaml
-
       - name: Build and Push image
         run: |
           docker build . -t kind-registry:5000/openfunction/openfunction:latest -f Dockerfile --build-arg GOPROXY="https://proxy.golang.org"
           docker push kind-registry:5000/openfunction/openfunction:latest
-
       - name: Install OpenFunction
         run: |
           kubectl apply -f config/bundle.yaml
@@ -129,9 +127,8 @@ jobs:
           kubectl patch deployments.apps -n openfunction openfunction-controller-manager -p "{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"openfunction\",\"image\":\"kind-registry:5000/openfunction/openfunction:latest\",\"resources\":null}]}}}}"
           kubectl rollout status -n openfunction deployment openfunction-controller-manager --timeout=1m
           sleep 10
-
-#      - name: Setup tmate session
-#        uses: mxschmitt/action-tmate@v1
+      #      - name: Setup tmate session
+      #        uses: mxschmitt/action-tmate@v1
 
       - name: Wait for kafka to be ready
         run: |
@@ -153,34 +150,28 @@ jobs:
         run: |
           chmod +x "${GITHUB_WORKSPACE}/.github/workflows/e2e-test.sh"
           bash "${GITHUB_WORKSPACE}"/.github/workflows/e2e-test.sh knative
-
       - name: Knative function with Dapr e2e test
         timeout-minutes: 10
         run: |
           bash "${GITHUB_WORKSPACE}"/.github/workflows/e2e-test.sh knative_dapr
-
       - name: Async pubsub function e2e test
         timeout-minutes: 10
         run: |
           bash "${GITHUB_WORKSPACE}"/.github/workflows/e2e-test.sh async_pubsub
-
       - name: Async bindings function e2e test
         timeout-minutes: 10
         run: |
           bash "${GITHUB_WORKSPACE}"/.github/workflows/e2e-test.sh async_bindings
-
       - name: Function with plugins e2e test
         timeout-minutes: 10
         run: |
           bash "${GITHUB_WORKSPACE}"/.github/workflows/e2e-test.sh plugin
-
       - name: Function with events e2e test
         timeout-minutes: 10
         run: |
           helm repo add nats https://nats-io.github.io/k8s/helm/charts/
           helm install nats nats/nats
           helm install stan nats/stan --set stan.nats.url=nats://nats:4222
-
           # deploy the eventbus backend nats streaming
           while /bin/true; do
             nats_status=`kubectl get pod nats-0 -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}'`
@@ -193,9 +184,7 @@ jobs:
               continue
             fi
           done
-
           bash "${GITHUB_WORKSPACE}"/.github/workflows/e2e-test.sh events
-
       - name: Output debug info
         if: ${{ failure() }}
         run: |
