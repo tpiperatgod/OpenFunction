@@ -1,93 +1,94 @@
-<p align="center">
-<a href="https://openfunction.dev/"><img src="docs/images/openfunction-logo-gif.gif" alt="banner" width="500px"></a>
-</p>
+# ofn
+// TODO(user): Add simple overview of use/purpose
 
-<p align="center">
-<b>Cloud native FaaS platform for running Serverless workloads with ease</b>
-</p>
+## Description
+// TODO(user): An in-depth paragraph about your project and overview of use
 
-<p align=center>
-<a href="https://goreportcard.com/report/github.com/openfunction/openfunction"><img src="https://goreportcard.com/badge/github.com/openfunction/openfunction" alt="A+"></a>
-<a href="https://hub.docker.com/r/openfunction/openfunction"><img src="https://img.shields.io/docker/pulls/openfunction/openfunction"></a>
-<a href="https://github.com/OpenFunction/OpenFunction/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"><img src="https://img.shields.io/github/issues/openfunction/openfunction?label=good%20first%20issues" alt="good first"></a>
-<a href="https://twitter.com/intent/follow?screen_name=KubeSphere"><img src="https://img.shields.io/twitter/follow/KubeSphere?style=social" alt="follow on Twitter"></a>
-<a href="https://cloud-native.slack.com/archives/C03ETDMD3LZ"><img src="https://img.shields.io/badge/Slack-600%2B-blueviolet?logo=slack&amp;logoColor=white"></a>
-<a href="https://www.youtube.com/channel/UCyTdUQUYjf7XLjxECx63Hpw"><img src="https://img.shields.io/youtube/channel/subscribers/UCyTdUQUYjf7XLjxECx63Hpw?style=social"></a>
-</p>
+## Getting Started
+You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
+**Note:** Your controller will automatically use the current context in your kubeconfig file (i.e. whatever cluster `kubectl cluster-info` shows).
 
-## 👀 Overview
+### Running on the cluster
+1. Install Instances of Custom Resources:
 
-[OpenFunction](https://openfunction.dev/) is a cloud-native open source FaaS (Function as a Service) platform aiming to let you focus on your business logic without having to maintain the underlying runtime environment and infrastructure. You only need to submit business-related source code in the form of functions.
+```sh
+kubectl apply -f config/samples/
+```
 
-<div align=center><img src=docs/images/function-lifecycle.svg></div>
+2. Build and push your image to the location specified by `IMG`:
 
-OpenFunction features include:
+```sh
+make docker-build docker-push IMG=<some-registry>/ofn:tag
+```
 
-- Cloud agnostic and decoupled with cloud providers' BaaS
-- Pluggable architecture that allows multiple function runtimes
-- Support both sync and async functions
-- Unique async functions support that can consume events directly from event sources
-- Support generating OCI-Compliant container images directly from function source code.
-- Flexible autoscaling between 0 and N
-- Advanced async function autoscaling based on event sources' specific metrics
-- Simplified BaaS integration for both sync and async functions by introducing [Dapr](https://dapr.io/) 
-- Advanced function ingress & traffic management powered by [K8s Gateway API](https://gateway-api.sigs.k8s.io/)
-- Flexible and easy-to-use events management framework
+3. Deploy the controller to the cluster with the image specified by `IMG`:
 
-## ☸ Architecture
+```sh
+make deploy IMG=<some-registry>/ofn:tag
+```
 
-<div align=center><img width="120%" height="120%" src=docs/images/openfunction-0.5-architecture.svg/></div>
+### Uninstall CRDs
+To delete the CRDs from the cluster:
 
-OpenFunction manages its components in the form of Custom Resource Definitions (CRD) throughout the lifecycle of a function, you can find more details in the [Concepts](https://openfunction.dev/docs/concepts/) section.
+```sh
+make uninstall
+```
 
-<div align=center><img src=docs/images/OpenFunction-events-architecture.svg></div>
+### Undeploy controller
+UnDeploy the controller from the cluster:
 
-OpenFunction Events is OpenFunction's events framework, you can refer to [OpenFunction Events](https://github.com/OpenFunction/OpenFunction/blob/main/docs/concepts/OpenFunction-events-framework.md) for more information.
+```sh
+make undeploy
+```
 
-## 🚀 QuickStart
+## Contributing
+// TODO(user): Add detailed information on how you would like others to contribute to this project
 
-### Install OpenFunction
+### How it works
+This project aims to follow the Kubernetes [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/).
 
-To install OpenFunction, please refer to [Installation Guide](https://openfunction.dev/docs/getting-started/installation/#install-openfunction).
+It uses [Controllers](https://kubernetes.io/docs/concepts/architecture/controller/),
+which provide a reconcile function responsible for synchronizing resources until the desired state is reached on the cluster.
 
-### Create functions
+### Test It Out
+1. Install the CRDs into the cluster:
 
-You can find guides to create the sync and async functions in different languages [here](https://openfunction.dev/docs/getting-started/quickstarts/)
+```sh
+make install
+```
 
-### Uninstall OpenFunction
+2. Run your controller (this will run in the foreground, so switch to a new terminal if you want to leave it running):
 
-To uninstall OpenFunction, please refer to [Uninstallation Guide](https://openfunction.dev/docs/getting-started/installation/#uninstall-openfunction).
+```sh
+make run
+```
 
-### FAQ
+**NOTE:** You can also run this in one step by running: `make install run`
 
-When you encounter any problems when using OpenFunction, you can refer to the [FAQ](https://openfunction.dev/docs/reference/faq/) for help.
+### Modifying the API definitions
+If you are editing the API definitions, generate the manifests such as CRs or CRDs using:
 
-## 💻 Development
+```sh
+make manifests
+```
 
-See the [Development Guide](docs/development/README.md) to get started with developing this project.
+**NOTE:** Run `make --help` for more information on all potential `make` targets
 
-## 🛣️ Roadmap
+More information can be found via the [Kubebuilder Documentation](https://book.kubebuilder.io/introduction.html)
 
-Here you can find OpenFunction [roadmap](https://github.com/orgs/OpenFunction/projects/3/views/1?layout=board).
+## License
 
-## 🏘️ Community
+Copyright 2023.
 
-### [Contact Us](https://github.com/OpenFunction/community#contact-us)
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-### [Community Call](https://github.com/OpenFunction/community#community-call)
+    http://www.apache.org/licenses/LICENSE-2.0
 
-### [Events](https://github.com/OpenFunction/community#events)
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-## Landscape
- 
-<p align="center">
-<br/><br/>
-<img src="https://landscape.cncf.io/images/left-logo.svg" width="150"/>&nbsp;&nbsp;<img src="https://landscape.cncf.io/images/right-logo.svg" width="200"/>&nbsp;&nbsp;
-<br/><br/>
-OpenFunction is a CNCF Sandbox project now which also enriches the <a href="https://landscape.cncf.io/serverless?license=apache-license-2-0">CNCF Cloud Native Landscape.
-</a>
-</p>
-
-## 📊 Status
-
-![Alt](https://repobeats.axiom.co/api/embed/48814fec53572bf75ac4de9d4f447d2c978b26ee.svg "Repobeats analytics image")
